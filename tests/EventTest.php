@@ -24,24 +24,22 @@ class EventTest extends \PHPUnit\Framework\TestCase
 
         $this->databaseStorage = new DatabaseStorage('localhost', 'event_logger', 'logs', 'root');
         $this->fileStorage = new FileStorage();
-
-        $this->logger = new Logger();
     }
 
     protected function setStorage($type)
     {
         switch ($type) {
             case 'database' :
-                $this->logger->setStorage($this->databaseStorage);
+                $this->logger = new Logger($this->databaseStorage);
                 break;
             case 'file' :
-                $this->logger->setStorage($this->fileStorage);
+                $this->logger = new Logger($this->fileStorage);
                 break;
         }
     }
 
     /** @test */
-    function is_log_method_for_database_works() {
+    function does_log_method_for_database_work() {
 
         $this->setStorage('database');
 
@@ -62,7 +60,7 @@ class EventTest extends \PHPUnit\Framework\TestCase
     }
 
     /** @test */
-    public function is_log_method_for_file_storage_works()
+    public function does_log_method_for_file_storage_work()
     {
         $this->setStorage('file');
 

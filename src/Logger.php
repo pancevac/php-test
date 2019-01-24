@@ -17,11 +17,20 @@ class Logger
     protected $storage;
 
     /**
-     * Set logger storage
+     * Logger constructor.
+     * @param StorageInterface $storage
+     */
+    public function __construct(StorageInterface $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
+     * Change current logger storage
      *
      * @param StorageInterface $storage
      */
-    public function setStorage(StorageInterface $storage)
+    public function changeStorage(StorageInterface $storage)
     {
         $this->storage = $storage;
     }
