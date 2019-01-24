@@ -36,7 +36,7 @@ class Event
     /**
      * @var string
      */
-    protected $createdAt;
+    protected $created;
 
     /**
      * @param string $type
@@ -156,9 +156,9 @@ class Event
     /**
      * @return string
      */
-    public function getCreatedAt(): string
+    public function getCreated(): string
     {
-        return $this->createdAt;
+        return $this->created;
     }
 
     /**
@@ -170,8 +170,8 @@ class Event
     {
         $arrayProperties = get_object_vars($this);
 
-        $arrayProperties['createdAt'] = isset($arrayProperties['createdAt']) ?
-            $this->getCreatedAt()->format('Y-m-d H:i:s') :
+        $arrayProperties['created'] = isset($arrayProperties['created']) ?
+            $this->getCreated()->format('Y-m-d H:i:s') :
             date('Y-m-d H:i:s');
 
         return $arrayProperties;

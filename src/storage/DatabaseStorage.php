@@ -59,8 +59,8 @@ class DatabaseStorage implements StorageInterface
     public function save(array $data): bool
     {
         $sql = /** @lang text */
-            "INSERT INTO $this->tableName (type, name, performer, subject, additional, created_at) 
-        VALUES (:type, :name, :performer, :subject, :additional, :createdAt)";
+            "INSERT INTO $this->tableName (type, name, performer, subject, additional, created) 
+        VALUES (:type, :name, :performer, :subject, :additional, :created)";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -84,6 +84,7 @@ class DatabaseStorage implements StorageInterface
             $sql = /** @lang text */
                 "SELECT * FROM $this->tableName WHERE";
 
+                // Concat query string
                 $firstCriteria = true;
                 foreach ($criteria as $key => $value) {
                     $sql .= $firstCriteria ? ' ' : ' AND ';
