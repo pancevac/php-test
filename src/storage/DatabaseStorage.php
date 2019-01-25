@@ -48,6 +48,8 @@ class DatabaseStorage implements StorageInterface
         $this->conn = new PDO($dsn, $userName, $password);
 
         if ($tableName) $this->tableName = $tableName;
+
+        $this->createTableIfNotExist();
     }
 
     /**
@@ -100,5 +102,23 @@ class DatabaseStorage implements StorageInterface
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @return int
+     */
+    protected function createTableIfNotExist()
+    {
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $this->conn->exec(
+            /** @lang text */
+            "CREATE TABLE IF NOT EXISTS $this->tableName(
+            id INTEGER AUTO_INCREMENT PRIMARY KEY,
+            type VARCHAR(50) NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            performer VARCHAR(100) NOT NULL,
+            subject VARCHAR(255) NOT NULL,
+            additional TEXT NULL,
+            created DATETIME NULL);
+        ");
+    }
 
 }
