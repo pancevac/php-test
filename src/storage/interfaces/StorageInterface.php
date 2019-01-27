@@ -11,18 +11,36 @@ namespace storage\interfaces;
 interface StorageInterface
 {
     /**
-     * Save event
+     * Save log
      *
-     * @param array $data
+     * @param \Event $event
      * @return bool
      */
-    public function save(array $data): bool;
+    public function save(\Event $event): bool;
 
     /**
-     * Get one or more events
+     * Get one or more logs
      *
+     * @param string $templateName
      * @param array $criteria
      * @return mixed
      */
-    public function get(array $criteria = []);
+    public function get(string $templateName, array $criteria = []);
+
+    /**
+     * Define new log template structure
+     *
+     * @param string $name
+     * @param array $structure
+     * @return bool
+     */
+    public function defineLogTemplate(string $name, array $structure): bool;
+
+    /**
+     * Get log template by name
+     *
+     * @param $name string
+     * @return mixed
+     */
+    public function getLogTemplate(string $name);
 }

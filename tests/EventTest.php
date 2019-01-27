@@ -22,7 +22,7 @@ class EventTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->databaseStorage = new DatabaseStorage('localhost', 'event_logger', 'logs', 'root');
+        $this->databaseStorage = new DatabaseStorage('localhost', 'event_logger', 'root', '', 'logs', 'templates');
         $this->fileStorage = new FileStorage();
     }
 
@@ -39,41 +39,34 @@ class EventTest extends \PHPUnit\Framework\TestCase
     }
 
     /** @test */
-    function does_log_method_for_database_work() {
-
+    function does_defining_log_structure_work()
+    {
         $this->setStorage('database');
 
-        $eventSet = [
-            'type' => 'Event',
-            'name' => 'Log',
-            'performer' => 'user',
-            'subject' => 'Test',
-            'additional' => ['test' => 'test'],
-        ];
-
-        $event = new Event();
-        $event->set($eventSet);
-
-        $result = $this->logger->log($event);
+        $result = $this->databaseStorage->defineLogTemplate('warning', [
+            'name',
+            'performer',
+            'subject',
+            'addition',
+        ]);
 
         $this->assertTrue($result);
     }
 
     /** @test */
-    public function does_log_method_for_file_storage_work()
-    {
-        $this->setStorage('file');
+    function does_log_method_for_database_work() {
+
+        $this->setStorage('database');
 
         $eventSet = [
-            'type' => 'Event',
             'name' => 'Log',
             'performer' => 'user',
-            'subject' => 'Test',
-            'additional' => ['test' => 'test'],
+            'subject' => 'Generic',
+            'addition' => ['Generic' => 'Generic'],
         ];
 
         $event = new Event();
-        $event->set($eventSet);
+        $event->set('warning', $eventSet);
 
         $result = $this->logger->log($event);
 
@@ -86,26 +79,12 @@ class EventTest extends \PHPUnit\Framework\TestCase
         $this->setStorage('database');
 
         $criteria = [
-            'id' => 1,
-            'name' => 'Log',
+            'created:<=' => date('Y-m-d H:i:s'),
         ];
 
-        $result = $this->logger->getLog($criteria);
+        $result = $this->logger->getLog('warning', $criteria);
 
         $this->assertTrue(! empty($result) && is_array($result));
     }
 
-    /** @test */
-    function is_log_from_file_storage_fetchable()
-    {
-        $this->setStorage('file');
-
-        $criteria = [
-            'name' => 'Log',
-        ];
-
-        $result = $this->logger->getLog($criteria);
-
-        $this->assertTrue(! empty($result) && is_array($result));
-    }
 }

@@ -53,17 +53,18 @@ class Logger
      */
     public function log(Event $event): bool
     {
-        return $this->storage->save($event->toArray());
+        return $this->storage->save($event);
     }
 
     /**
      * Retrieve log from storage
      *
+     * @param $type
      * @param array $criteria
      * @return mixed
      */
-    public function getLog($criteria = [])
+    public function getLog($type, $criteria = [])
     {
-        return $this->storage->get($criteria);
+        return $this->storage->get($type, $criteria);
     }
 }
